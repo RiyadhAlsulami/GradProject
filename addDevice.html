@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="EN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <link href="css/styles.css?v=2" rel="stylesheet" />
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/addDevice.js"></script>
+    <script type="module" src="js/config.js"></script>
+    <title>Add Device - Plug&amp;Save</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="left-panel">
+            <div class="logo"><span class="icon">⚡</span>
+                <h1>Plug&amp;Save</h1>
+            </div>
+
+            <h2>Add New Device</h2>
+            <p>Connect your smart plug to your Plug&Save account. Choose your preferred method to connect your device.</p>
+        </div>
+        <div class="right-panel">
+            <div class="form-box">
+                <h2>Connect Your Device</h2>
+                <div class="connection-tabs">
+                    <button class="tab-button active" onclick="showTab('codeTab')">Device Code</button>
+                    <button class="tab-button" onclick="showTab('scanTab')">Scan QR Code</button>
+                    <button class="tab-button" onclick="showTab('demoTab')">Demo Devices</button>
+                </div>
+                
+                <div id="codeTab" class="tab-content" style="display: block;">
+                    <form id="deviceCodeForm">
+                        <div class="form-group">
+                            <label for="deviceName">Device Name</label>
+                            <input id="deviceName" placeholder="E.g., Living Room Lamp" required type="text" />
+                        </div>
+                        <div class="form-group">
+                            <label for="deviceCode">Device Code</label>
+                            <input id="deviceCode" placeholder="Enter the 6-digit code on your device" pattern="[A-Za-z0-9]{6}" required type="text" maxlength="6" />
+                            <small>The 6-digit code is printed on the device or packaging</small>
+                        </div>
+                        <button class="primary-button" type="submit">Connect Device</button>
+                    </form>
+                </div>
+                
+                <div id="scanTab" class="tab-content" style="display: none;">
+                    <div class="qr-container">
+                        <div class="camera-simulation">
+                            <div class="camera-overlay">
+                                <div class="corner top-left"></div>
+                                <div class="corner top-right"></div>
+                                <div class="corner bottom-left"></div>
+                                <div class="corner bottom-right"></div>
+                                <div class="scanning-line"></div>
+                            </div>
+                            <p class="camera-text">Camera simulation</p>
+                        </div>
+                        <p class="scan-instructions">Point your camera at the QR code on your smart plug</p>
+                        <button onclick="simulateScan()" class="primary-button">Simulate Scanning</button>
+                    </div>
+                </div>
+                
+                <div id="demoTab" class="tab-content" style="display: none;">
+                    <h3>Select a Demo Device</h3>
+                    <p>Choose from our selection of virtual devices for demonstration</p>
+                    <div class="demo-devices">
+                        <div class="demo-device" onclick="selectDemoDevice('Smart TV', 'Living Room')">
+                            <div class="device-icon">📺</div>
+                            <div class="device-info">
+                                <h4>Smart TV</h4>
+                                <p>150W typical usage</p>
+                            </div>
+                        </div>
+                        <div class="demo-device" onclick="selectDemoDevice('Refrigerator', 'Kitchen')">
+                            <div class="device-icon">❄️</div>
+                            <div class="device-info">
+                                <h4>Refrigerator</h4>
+                                <p>100W typical usage</p>
+                            </div>
+                        </div>
+                        <div class="demo-device" onclick="selectDemoDevice('Air Conditioner', 'Bedroom')">
+                            <div class="device-icon">🌬️</div>
+                            <div class="device-info">
+                                <h4>Air Conditioner</h4>
+                                <p>1500W typical usage</p>
+                            </div>
+                        </div>
+                        <div class="demo-device" onclick="selectDemoDevice('Water Heater', 'Bathroom')">
+                            <div class="device-icon">🚿</div>
+                            <div class="device-info">
+                                <h4>Water Heater</h4>
+                                <p>1200W typical usage</p>
+                            </div>
+                        </div>
+                        <div class="demo-device" onclick="selectDemoDevice('Washing Machine', 'Laundry Room')">
+                            <div class="device-icon">🧺</div>
+                            <div class="device-info">
+                                <h4>Washing Machine</h4>
+                                <p>500W typical usage</p>
+                            </div>
+                        </div>
+                        <div class="demo-device" onclick="selectDemoDevice('Computer Workstation', 'Office')">
+                            <div class="device-icon">💻</div>
+                            <div class="device-info">
+                                <h4>Computer Workstation</h4>
+                                <p>200W typical usage</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="status" style="margin-top: 15px;"></div>
+            </div>
+
+        </div>
+    </div>
+    <nav class="bottom-nav">
+        <button class="nav-button" onclick="window.location.href='dashboard.html'">Dashboard</button>
+        <button class="nav-button" onclick="window.location.href='addDevice.html'">Add Device</button>
+        <button class="nav-button" onclick="window.location.href='report.html'">View Report</button>
+    </nav>
+  
+</body>
+
+</html>

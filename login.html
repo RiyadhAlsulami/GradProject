@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="EN">
+
+<head>
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <link href="css/styles.css?v=2" rel="stylesheet" />
+    <script type="module" src="js/login.js"></script>
+    <title>Login - Plug&amp;Save</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="left-panel">
+            <div class="logo">
+                <span class="icon">⚡</span>
+                <h1>Plug&amp;Save</h1>
+            </div>
+
+            <h2>Welcome Back!</h2>
+            <p>Log in to your account to monitor and control your connected
+                devices. Keep track of your energy savings and manage your smart
+                home efficiently.</p>
+        </div>
+        <div class="right-panel">
+            
+            <div class="form-box">
+                <a class="back" href="index.html">← Back to home</a>
+                <h2>Login</h2>
+                <p>Welcome back! Please enter your credentials
+                    to access your Plug&amp;Save account and continue managing
+                    your energy usage.</p>
+                <form id="loginForm">
+                    <label for="loginEmail">Email Address</label>
+                    <input id="loginEmail" placeholder="Enter your email" required="True" type="email" />
+                    <label for="loginPassword">Password</label>
+                    <input id="loginPassword" placeholder="Enter your password" required="True" type="password" />
+                    <button class="primary-button" type="submit">Login</button>
+                </form>
+                <p class="login-text">Don't have an account? <button class="navs-button"
+                        onclick="window.location.href='signup.html'">Sign up here</button>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

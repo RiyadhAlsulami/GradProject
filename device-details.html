@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="EN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <link href="css/styles.css?v=2" rel="stylesheet" />
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/device-details.js"></script>
+    <script type="module" src="js/config.js"></script>
+    <title>Device Details - Plug&amp;Save</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="left-panel">
+            <div class="logo"><span class="icon">⚡</span>
+                <h1>Plug&amp;Save</h1>
+            </div>
+
+            <h2>Device Details</h2>
+            <p>View and control your device's power consumption and settings.</p>
+        </div>
+        <div class="right-panel">
+            <div class="dashboard-content">
+                <div class="dashboard-card">
+                    <div id="deviceHeader">
+                        <h2 id="deviceName">Loading device...</h2>
+                    </div>
+
+                    <div id="deviceControls" class="device-controls">
+                        <button id="powerToggle" class="power-button">
+                            <span class="power-icon">⏻</span>
+                            <span id="powerStatus">Turn Off</span>
+                        </button>
+                        <button id="deleteDevice" class="danger-button">Delete Device</button>
+                    </div>
+
+                    <div class="usage-stats">
+                        <div class="stat-card">
+                            <div class="stat-title">Current Consumption</div>
+                            <div class="stat-value" id="currentConsumption">0 W</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-title">Daily Usage</div>
+                            <div class="stat-value" id="dailyUsage">0 kWh</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-title">Monthly Usage</div>
+                            <div class="stat-value" id="monthlyUsage">0 kWh</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-title">Estimated Cost</div>
+                            <div class="stat-value" id="estimatedCost">0 SAR</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Consumption History (24 Hours)</h3>
+                        <canvas id="consumptionChart"></canvas>
+                    </div>
+
+                    <div class="device-settings">
+                        <h3>Device Settings</h3>
+                        <div class="settings-form">
+                            <div class="form-group">
+                                <label for="deviceNickname">Device Nickname</label>
+                                <input type="text" id="deviceNickname" placeholder="Enter a nickname for this device">
+                            </div>
+                            <div class="form-group">
+                                <label for="electricityRate">Electricity Rate (SAR/kWh)</label>
+                                <input type="number" id="electricityRate" step="0.01" min="0" readonly>
+                                <small class="form-text">Automatically calculated based on Saudi Electricity Company rates</small>
+                                <div class="calculated-rate">Current rate: <span id="calculatedRate">0.18 SAR/kWh</span></div>
+                            </div>
+                            <div class="limit-settings">
+                                <div class="form-group">
+                                    <label for="costLimit">Daily Cost Limit (SAR)</label>
+                                    <input type="number" id="costLimit" step="0.1" min="0" placeholder="Set cost limit">
+                                    <small>Current limit: <span id="currentCostLimit">Not set</span></small>
+                                    <button type="button" id="removeCostLimit" class="small-button" style="display: none;">Remove Limit</button>
+                                </div>
+                                <div class="form-group">
+                                    <label for="powerLimit">Power Limit (kW)</label>
+                                    <input type="number" id="powerLimit" step="0.1" min="0" placeholder="Set power limit">
+                                    <small>Current limit: <span id="currentPowerLimit">Not set</span></small>
+                                    <button type="button" id="removePowerLimit" class="small-button" style="display: none;">Remove Limit</button>
+                                </div>
+                                <div class="form-group">
+                                    <label for="limitType">Limit Type</label>
+                                    <select id="limitType">
+                                        <option value="daily">Daily</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                </div>
+                                <button id="savePowerLimits" class="secondary-button">Save Power Limits</button>
+                            </div>
+                            <button id="saveSettings" class="primary-button">Save Settings</button>
+                        </div>
+                    </div>
+
+                    <div id="limitWarning" class="limit-warning" style="display: none;">
+                        <div class="warning-icon">⚠️</div>
+                        <div class="warning-message">
+                            <h3>Limit Reached!</h3>
+                            <p id="warningMessage">Your device has reached a consumption limit.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="device-info">
+                        <h3>Device Information</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Status:</span>
+                                <span id="deviceStatus" class="status-off">OFF</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">IP Address:</span>
+                                <span id="deviceIp">-</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Added on:</span>
+                                <span id="createdAt">-</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Last updated:</span>
+                                <span id="updatedAt">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-button" onclick="window.location.href='dashboard.html'">Dashboard</button>
+        <button class="nav-button" onclick="window.location.href='addDevice.html'">Add Device</button>
+        <button class="nav-button" onclick="window.location.href='report.html'">View Report</button>
+    </nav>
+
+</body>
+
+</html>
