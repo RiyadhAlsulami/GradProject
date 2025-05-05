@@ -1,0 +1,186 @@
+/* 
+ * Responsive Design Enhancement for Plug&Save
+ * This file provides additional responsive design rules to ensure
+ * the website displays correctly on all devices from mobile to desktop
+ */
+
+/* Base responsive viewport setting */
+@viewport {
+  width: device-width;
+  zoom: 1.0;
+}
+
+/* Tablet Landscape (1024px and below) */
+@media (max-width: 1024px) {
+  /* Adjust card layouts for better tablet viewing */
+  .dashboard-card, .device-card, .report-card {
+    flex: 0 0 calc(50% - 20px);
+  }
+  
+  /* Adjust font sizes for better readability */
+  h1 {
+    font-size: 28px;
+  }
+  
+  h2 {
+    font-size: 24px;
+  }
+  
+  /* Ensure tables are responsive */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+/* Tablet Portrait (768px and below) */
+@media (max-width: 768px) {
+  /* Adjust card layouts for tablet portrait */
+  .dashboard-card, .device-card, .report-card {
+    flex: 0 0 100%;
+    margin-bottom: 20px;
+  }
+  
+  /* Make sure forms are properly sized */
+  form {
+    max-width: 100%;
+  }
+  
+  /* Adjust spacing for better touch targets */
+  button, .nav-button, .action-button {
+    padding: 12px 16px;
+    margin-bottom: 10px;
+  }
+  
+  /* Ensure adequate spacing between form elements */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  /* Adjust charts and graphs for smaller screens */
+  canvas, .chart-container {
+    max-width: 100%;
+    height: auto !important;
+  }
+}
+
+/* Large Mobile (576px and below) */
+@media (max-width: 576px) {
+  /* Further reduce heading sizes */
+  h1 {
+    font-size: 24px;
+  }
+  
+  h2 {
+    font-size: 20px;
+  }
+  
+  h3 {
+    font-size: 18px;
+  }
+  
+  /* Adjust padding for content areas */
+  .content-area, .card-content {
+    padding: 15px;
+  }
+  
+  /* Stack horizontal elements */
+  .flex-row, .button-group {
+    flex-direction: column;
+  }
+  
+  /* Ensure adequate touch targets for mobile */
+  button, .nav-button, .action-button, select, input[type="checkbox"], input[type="radio"] {
+    min-height: 44px; /* Apple's recommended minimum touch target size */
+  }
+}
+
+/* Small Mobile (480px and below) */
+@media (max-width: 480px) {
+  /* Minimize padding to maximize content space */
+  .container, .card, .panel {
+    padding: 10px;
+  }
+  
+  /* Further adjustments for very small screens */
+  .logo h1 {
+    font-size: 18px;
+  }
+  
+  /* Hide decorative elements on very small screens */
+  .decorative-only {
+    display: none;
+  }
+  
+  /* Ensure form labels are above inputs rather than beside them */
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  /* Ensure inputs have adequate size for touch */
+  input, select, textarea {
+    font-size: 16px; /* Prevents iOS zoom on focus */
+    padding: 10px;
+  }
+}
+
+/* Fix for device orientation changes */
+@media screen and (orientation: portrait) {
+  /* Adjustments specific to portrait orientation */
+  .chart-container {
+    height: 300px !important;
+  }
+}
+
+@media screen and (orientation: landscape) and (max-width: 768px) {
+  /* Adjustments specific to landscape orientation on smaller devices */
+  .left-panel {
+    height: auto;
+    min-height: 80px;
+  }
+  
+  .chart-container {
+    height: 200px !important;
+  }
+}
+
+/* High-DPI screens (Retina displays, etc.) */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Ensure SVGs and icons look crisp on high-DPI screens */
+  .logo-svg, .icon-svg {
+    transform: scale(1);
+  }
+}
+
+/* Print styles for reports */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    font-size: 12pt;
+    background: #fff;
+    color: #000;
+  }
+  
+  .container {
+    display: block;
+  }
+  
+  .left-panel {
+    display: none;
+  }
+  
+  .right-panel {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  /* Ensure tables print properly */
+  table {
+    page-break-inside: avoid;
+  }
+}
