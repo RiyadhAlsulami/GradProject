@@ -1,0 +1,212 @@
+/* Profile Page Styles */
+
+/* Card header */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.back {
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.back:hover {
+    text-decoration: underline;
+}
+
+/* Profile content */
+#profileContent {
+    margin-top: 20px;
+}
+
+/* Profile actions in left panel */
+.profile-actions {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Loading indicator */
+.loading-indicator {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+/* Form styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.form-group input[readonly] {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 12px;
+}
+
+.info-text {
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    margin: 5px 0 0 0;
+    color: #333;
+}
+
+/* Form actions */
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Section divider */
+.section-divider {
+    height: 1px;
+    background-color: #ddd;
+    margin: 30px 0;
+}
+
+/* Password input container */
+.password-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-container input {
+    flex: 1;
+    padding-right: 40px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Password requirements */
+.password-requirements {
+    margin: 15px 0;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+.password-requirements p {
+    margin: 0 0 10px 0;
+    font-weight: bold;
+}
+
+.password-requirements ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.password-requirements li {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Password policy */
+.password-policy {
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.policy-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.policy-item:last-child {
+    margin-bottom: 0;
+}
+
+.policy-icon {
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    color: #f44336;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Danger button */
+.danger-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.danger-button:hover {
+    background-color: #d32f2f;
+}

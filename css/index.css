@@ -1,0 +1,188 @@
+/* Index (Home) Page Styles */
+
+/* Animated Lightning Icon */
+.logo .icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+/* SVG lightning animation */
+.lightning-svg {
+    width: 32px;
+    height: 32px;
+}
+
+/* Lightning flash effect for the background */
+.logo .icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle, rgba(76, 175, 80, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
+    border-radius: 50%;
+    opacity: 0;
+    animation: flash-effect 3s infinite;
+}
+
+@keyframes flash-effect {
+    0%, 15%, 85%, 100% {
+        opacity: 0;
+    }
+    30%, 50% {
+        opacity: 0.3;
+    }
+    70% {
+        opacity: 0.7;
+    }
+    75% {
+        opacity: 0.2;
+    }
+}
+
+/* Form box styling */
+.form-box {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+    max-width: 500px;
+    margin: 50px auto;
+}
+
+.form-box h2 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+    font-size: 28px;
+}
+
+.form-box p {
+    color: #666;
+    margin-bottom: 25px;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+/* Action buttons */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.action-buttons button {
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 500;
+    width: 100%;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.action-buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-nav-btn {
+    background-color: #4CAF50;
+}
+
+.login-nav-btn:hover {
+    background-color: #3e8e41;
+}
+
+.signup-nav-btn {
+    background-color: #607d8b;
+}
+
+.signup-nav-btn:hover {
+    background-color: #4b636e;
+}
+
+.action-buttons p {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.action-buttons a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.action-buttons a:hover {
+    text-decoration: underline;
+}
+
+/* Left panel customization for home page */
+.left-panel {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    text-align: center;
+}
+
+.left-panel h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.left-panel p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 90%;
+}
+
+/* Logo enhancement */
+.logo {
+    margin-bottom: 40px;
+    justify-content: center;
+}
+
+.logo .icon {
+    font-size: 32px;
+    margin-right: 15px;
+    color: #4CAF50;
+}
+
+.logo h1 {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+/* Lightning glow effect */
+.logo .icon svg {
+    filter: drop-shadow(0 0 2px rgba(76, 175, 80, 0.3));
+    animation: glow-pulse 6s infinite;
+}
+
+@keyframes glow-pulse {
+    0%, 45%, 100% {
+        filter: drop-shadow(0 0 2px rgba(76, 175, 80, 0.3));
+    }
+    50% {
+        filter: drop-shadow(0 0 5px rgba(76, 175, 80, 0.5));
+    }
+    54% {
+        filter: drop-shadow(0 0 10px rgba(76, 175, 80, 0.7));
+    }
+    58% {
+        filter: drop-shadow(0 0 15px rgba(76, 175, 80, 0.9));
+    }
+    62% {
+        filter: drop-shadow(0 0 10px rgba(76, 175, 80, 0.7));
+    }
+    66% {
+        filter: drop-shadow(0 0 2px rgba(76, 175, 80, 0.3));
+    }
+}

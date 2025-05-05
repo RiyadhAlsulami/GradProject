@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="EN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <link href="css/common.css" rel="stylesheet" />
+    <link href="css/report.css" rel="stylesheet" />
+    <link href="css/preloader.css" rel="stylesheet" />
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="js/auth.js?v=2"></script>
+    <script type="module" src="js/report.js?v=2"></script>
+    <script type="module" src="js/config.js?v=2"></script>
+    <title>Energy Report - Plug&amp;Save</title>
+</head>
+
+<body>
+    <div class="preloader">
+        <div class="preloader-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="preloader-svg">
+                <path class="preloader-path" d="M10.5 1L2 12h7l-1 11L18 12h-7l1-11z" fill="none" stroke="#4CAF50" stroke-width="1.5" />
+            </svg>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="left-panel">
+            <div class="logo">
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 28 28" class="logo-svg">
+                        <path d="M10.5 1L2 12h7l-1 11L18 12h-7l1-11z" fill="none" stroke="#4CAF50" stroke-width="1.5" />
+                    </svg>
+                </div>
+                <h1>Plug&amp;Save</h1>
+            </div>
+            <h2>Energy Reports</h2>
+            <p>Track your energy usage and savings over time.</p>
+        </div>
+
+        <div class="right-panel">
+            <div class="dashboard-content">
+                <div class="dashboard-card">
+                    <h2>Detailed Energy Report</h2>
+                    <div class="report-header">
+                        <h3>Energy Consumption Report</h3>
+                        <p>Generated on: <span id="reportGenerationTime"></span></p>
+                    </div>
+
+                    <div class="report-summary">
+                        <h3>Summary</h3>
+                        <div class="summary-grid">
+                            <div class="summary-item">
+                                <label>Total Devices:</label>
+                                <span id="totalDevices">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <label>Active Devices:</label>
+                                <span id="activeDevices">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <label>Total Monthly Usage:</label>
+                                <span id="totalMonthlyUsage">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <label>Total Monthly Cost:</label>
+                                <span id="totalMonthlyCost">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="device-breakdown">
+                        <h3>Device Breakdown</h3>
+                        <div class="table-container">
+                            <table class="device-table">
+                                <thead>
+                                    <tr>
+                                        <th>Device Name</th>
+                                        <th>Status</th>
+                                        <th>Monthly Usage</th>
+                                        <th>Monthly Cost</th>
+                                        <th>Savings</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="deviceBreakdownBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <h2>Energy Consumption Overview</h2>
+                    <div class="report-tabs">
+                        <button class="tab-button active" onclick="switchTab('daily')">Daily</button>
+                        <button class="tab-button" onclick="switchTab('weekly')">Weekly</button>
+                        <button class="tab-button" onclick="switchTab('monthly')">Monthly</button>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="consumptionChart"></canvas>
+                        <div id="noDataMessage" class="no-data-message" style="display: block;">
+                            <p>No consumption data available. Add devices or wait for consumption data to be recorded.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <h2>Device-Wise Consumption</h2>
+                    <div class="chart-container">
+                        <canvas id="deviceComparisonChart"></canvas>
+                        <div id="noDeviceDataMessage" class="no-data-message" style="display: block;">
+                            <p>No device consumption data available.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-button" onclick="window.location.href='dashboard.html'">Dashboard</button>
+        <button class="nav-button" onclick="window.location.href='addDevice.html'">Add Device</button>
+        <button class="nav-button" onclick="window.location.href='report.html'">View Report</button>
+    </nav>
+
+    <script src="js/preloader.js"></script>
+</body>
+
+</html>
