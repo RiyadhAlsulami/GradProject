@@ -51,61 +51,10 @@
         filter: drop-shadow(0 0 2px rgba(76, 175, 80, 0.5));
     }
     
-    /* Split effect - scale down and fade */
-    20% {
-        transform: scale(0.9);
-        stroke-width: 0;
-        filter: drop-shadow(0 0 0 rgba(76, 175, 80, 0));
-        stroke-dasharray: 40;
-        stroke-dashoffset: 40;
-    }
-    
-    /* Appear in pieces */
-    30% {
-        transform: scale(0.9) translate(-2px, -2px);
-        stroke-width: 1.5;
-        filter: drop-shadow(0 0 3px rgba(76, 175, 80, 0.7));
-        stroke-dasharray: 40;
-        stroke-dashoffset: 30;
-    }
-    
-    40% {
-        transform: scale(0.9) translate(2px, 2px);
-        stroke-width: 1.5;
-        filter: drop-shadow(0 0 4px rgba(76, 175, 80, 0.8));
-        stroke-dasharray: 40;
-        stroke-dashoffset: 20;
-    }
-    
     50% {
-        transform: scale(0.9) translate(-1px, 1px);
-        stroke-width: 1.5;
-        filter: drop-shadow(0 0 5px rgba(76, 175, 80, 0.9));
-        stroke-dasharray: 40;
-        stroke-dashoffset: 10;
-    }
-    
-    /* Rejoin */
-    60% {
-        transform: scale(0.9) translate(0, 0);
-        stroke-width: 1.5;
-        filter: drop-shadow(0 0 4px rgba(76, 175, 80, 0.8));
-        stroke-dasharray: 40;
-        stroke-dashoffset: 0;
-    }
-    
-    70% {
-        transform: scale(1.1);
-        stroke-width: 2;
-        filter: drop-shadow(0 0 8px rgba(76, 175, 80, 1));
-        stroke-dasharray: 0;
-        stroke-dashoffset: 0;
-    }
-    
-    80% {
-        transform: scale(1);
-        stroke-width: 1.5;
-        filter: drop-shadow(0 0 4px rgba(76, 175, 80, 0.7));
+        transform: scale(1.05);
+        stroke-width: 1.8;
+        filter: drop-shadow(0 0 4px rgba(76, 175, 80, 0.6));
     }
 }
 
@@ -124,16 +73,10 @@
 }
 
 @keyframes flash-effect {
-    0%, 15%, 85%, 100% {
+    0%, 100% {
         opacity: 0;
     }
-    30%, 50% {
+    50% {
         opacity: 0.3;
-    }
-    70% {
-        opacity: 0.7;
-    }
-    75% {
-        opacity: 0.2;
     }
 }

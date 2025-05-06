@@ -18,9 +18,18 @@ const formatDate = dateString => !dateString ? 'N/A' : new Date(dateString).toLo
 
 // DOM helper functions
 const $ = id => document.getElementById(id);
-const setDisplay = (id, display) => $(id).style.display = display;
-const setValue = (id, value) => $(id).value = value || '';
-const setReadOnly = (ids, readOnly) => ids.forEach(id => $(id).readOnly = readOnly);
+const setDisplay = (id, display) => {
+    const element = $(id);
+    if (element) element.style.display = display;
+};
+const setValue = (id, value) => {
+    const element = $(id);
+    if (element) element.value = value || '';
+};
+const setReadOnly = (ids, readOnly) => ids.forEach(id => {
+    const element = $(id);
+    if (element) element.readOnly = readOnly;
+});
 
 // Load user profile data
 async function loadUserProfile() {
@@ -34,7 +43,7 @@ async function loadUserProfile() {
         if (sessionError || !session) throw new Error('Not authenticated. Please log in.');
         
         const userId = session.user.id;
-        setValue('email', session.user.email);
+        setValue('email', session.user.email || session.user.email_address || '');
         
         // Fetch user profile
         let { data: profile, error: profileError } = await supabase
@@ -67,10 +76,21 @@ async function loadUserProfile() {
 
 // Update form with profile data
 function updateProfileForm(profile) {
+    if (!profile) return;
+    
     setValue('fullName', profile.full_name);
-    setValue('phone', profile.phone);
-    $('createdAt').textContent = formatDate(profile.created_at);
-    $('updatedAt').textContent = formatDate(profile.updated_at);
+    setValue('phone', profile.phone || '');
+    setValue('email', profile.email || profile.email_address || '');
+    
+    const createdAt = $('createdAt');
+    if (createdAt) createdAt.textContent = formatDate(profile.created_at);
+    
+    const updatedAt = $('updatedAt');
+    if (updatedAt) updatedAt.textContent = formatDate(profile.updated_at);
+    
+    // Set join date if it exists
+    const joinDate = $('joinDate');
+    if (joinDate) joinDate.value = formatDate(profile.created_at);
 }
 
 // Toggle edit mode functions
@@ -115,17 +135,26 @@ async function saveProfileChanges(event) {
     
     try {
         const submitButton = $('saveProfileBtn');
+        if (!submitButton) return;
+        
         submitButton.textContent = 'Saving...';
         submitButton.disabled = true;
         
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) throw new Error('Not authenticated');
         
+        const fullNameInput = $('fullName');
+        const phoneInput = $('phone');
+        
+        if (!fullNameInput || !phoneInput) {
+            throw new Error('Required form fields are missing');
+        }
+        
         const { data, error } = await supabase
             .from('profiles')
             .update({
-                full_name: $('fullName').value,
-                phone: $('phone').value,
+                full_name: fullNameInput.value,
+                phone: phoneInput.value,
                 updated_at: new Date().toISOString()
             })
             .eq('id', session.user.id)
@@ -142,8 +171,10 @@ async function saveProfileChanges(event) {
         showPopup(error.message || 'Failed to update profile', false);
     } finally {
         const submitButton = $('saveProfileBtn');
-        submitButton.textContent = 'Save Changes';
-        submitButton.disabled = false;
+        if (submitButton) {
+            submitButton.textContent = 'Save Changes';
+            submitButton.disabled = false;
+        }
     }
 }
 

@@ -5,15 +5,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Hide preloader when page is fully loaded
     window.addEventListener('load', function() {
-        preloader.classList.add('hidden');
-        
-        // Remove preloader from DOM after transition completes
-        setTimeout(function() {
-            preloader.style.display = 'none';
-        }, 500);
+        // Use requestAnimationFrame for smoother transitions
+        requestAnimationFrame(() => {
+            preloader.classList.add('hidden');
+            
+            // Remove preloader from DOM after transition completes
+            setTimeout(function() {
+                preloader.style.display = 'none';
+            }, 300); // Reduced from 500ms to 300ms
+        });
     });
     
-    // Show preloader before navigating away
+    // Simplified navigation preloader
     document.addEventListener('click', function(e) {
         // Check if the clicked element is a link to another page
         const target = e.target.closest('a');
@@ -21,14 +24,8 @@ document.addEventListener('DOMContentLoaded', function() {
             target.href.indexOf(window.location.origin) === 0 && 
             !target.target && !e.ctrlKey && !e.metaKey) {
             
-            e.preventDefault();
-            preloader.classList.remove('hidden');
-            preloader.style.display = 'flex';
-            
-            // Navigate after a short delay to show the preloader
-            setTimeout(function() {
-                window.location.href = target.href;
-            }, 300);
+            // Navigate immediately without showing preloader
+            window.location.href = target.href;
         }
     });
 });
@@ -36,6 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
 // Function to show preloader programmatically (for form submissions, etc.)
 function showPreloader() {
     const preloader = document.querySelector('.preloader');
-    preloader.classList.remove('hidden');
-    preloader.style.display = 'flex';
+    if (preloader) {
+        preloader.classList.remove('hidden');
+        preloader.style.display = 'flex';
+    }
 }

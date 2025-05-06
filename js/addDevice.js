@@ -58,30 +58,6 @@ function showTab(tabId) {
     document.querySelector(`.tab-button[onclick="showTab('${tabId}')"]`).classList.add('active');
 }
 
-// Simulate QR code scanning
-async function simulateScan() {
-    const statusElement = document.getElementById('status');
-    statusElement.innerHTML = '<div class="spinner"></div> Scanning QR code...';
-    
-    // Simulate scanning delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Generate a random device type
-    const deviceTypes = ['Smart TV', 'Refrigerator', 'Air Conditioner', 'Lamp', 'Computer'];
-    const randomType = deviceTypes[Math.floor(Math.random() * deviceTypes.length)];
-    
-    // Generate a random room
-    const rooms = ['Living Room', 'Kitchen', 'Bedroom', 'Office', 'Dining Room'];
-    const randomRoom = rooms[Math.floor(Math.random() * rooms.length)];
-    
-    // Generate a random serial number
-    const randomSerial = `${Math.floor(100000 + Math.random() * 900000)}`;
-    
-    // Show success and create the device
-    statusElement.textContent = `QR code detected: ${randomType} in ${randomRoom}`;
-    addVirtualDevice(`${randomRoom} ${randomType}`, randomSerial);
-}
-
 // Select a demo device
 function selectDemoDevice(deviceType, location) {
     const deviceName = `${location} ${deviceType}`;
@@ -172,7 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Expose functions to window object for HTML access
     window.showTab = showTab;
-    window.simulateScan = simulateScan;
     window.selectDemoDevice = selectDemoDevice;
     
     // Check if user is logged in

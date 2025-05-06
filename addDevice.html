@@ -9,6 +9,9 @@
     <link href="css/addDevice.css" rel="stylesheet" />
     <link href="css/preloader.css" rel="stylesheet" />
     <link href="css/responsive.css" rel="stylesheet" />
+    <link href="css/sidebar.css" rel="stylesheet" />
+    <link href="css/header.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="module" src="js/auth.js?v=2"></script>
@@ -17,7 +20,7 @@
     <title>Add Device - Plug&amp;Save</title>
 </head>
 
-<body>
+<body class="add-device-page">
     <div class="preloader">
         <div class="preloader-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="preloader-svg">
@@ -26,9 +29,31 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="left-panel">
-            <div class="logo">
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <button id="menu-toggle" class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="page-title">Add Device</div>
+        </div>
+        <div class="header-right">
+            <div class="header-logo">
+                <a href="dashboard.html" class="logo-link">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 28 28" class="logo-svg">
+                            <path d="M10.5 1L2 12h7l-1 11L18 12h-7l1-11z" fill="none" stroke="#4CAF50" stroke-width="1.5" />
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
                 <div class="icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 28 28" class="logo-svg">
                         <path d="M10.5 1L2 12h7l-1 11L18 12h-7l1-11z" fill="none" stroke="#4CAF50" stroke-width="1.5" />
@@ -36,16 +61,33 @@
                 </div>
                 <h1>Plug&amp;Save</h1>
             </div>
-
-            <h2>Add New Device</h2>
-            <p>Connect your smart plug to your Plug&Save account. Choose your preferred method to connect your device.</p>
         </div>
-        <div class="right-panel">
+        <div class="sidebar-menu">
+            <a href="dashboard.html" class="sidebar-menu-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="addDevice.html" class="sidebar-menu-item active">
+                <i class="fas fa-plus-circle"></i>
+                <span>Add Device</span>
+            </a>
+            <a href="report.html" class="sidebar-menu-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Reports</span>
+            </a>
+            <a href="profile.html" class="sidebar-menu-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
             <div class="form-box">
                 <h2>Connect Your Device</h2>
                 <div class="connection-tabs">
                     <button class="tab-button active" onclick="showTab('codeTab')">Device Code</button>
-                    <button class="tab-button" onclick="showTab('scanTab')">Scan QR Code</button>
                     <button class="tab-button" onclick="showTab('demoTab')">Demo Devices</button>
                 </div>
                 
@@ -76,30 +118,6 @@
                         
                         <button type="submit" class="connect-button">Connect Device</button>
                     </form>
-                </div>
-                
-                <div id="scanTab" class="tab-content">
-                    <div class="qr-container">
-                        <div class="qr-scanner">
-                            <div class="scanner-overlay">
-                                <div class="scanner-line"></div>
-                            </div>
-                            <div class="camera-placeholder">
-                                <i class="fas fa-camera"></i>
-                                <p>Camera feed will appear here</p>
-                            </div>
-                        </div>
-                        <div class="qr-instructions">
-                            <h3>Scan QR Code</h3>
-                            <p>Point your camera at the QR code on your device or its packaging.</p>
-                            <ol>
-                                <li>Make sure the QR code is well-lit and clearly visible</li>
-                                <li>Hold your device steady while scanning</li>
-                                <li>The app will automatically detect the code</li>
-                            </ol>
-                            <button class="connect-button" id="startScanButton">Start Camera</button>
-                        </div>
-                    </div>
                 </div>
                 
                 <div id="demoTab" class="tab-content">
@@ -139,15 +157,12 @@
                 
                 <div id="status" style="margin-top: 15px;"></div>
             </div>
-
         </div>
     </div>
-    <nav class="bottom-nav">
-        <button class="nav-button" onclick="window.location.href='dashboard.html'">Dashboard</button>
-        <button class="nav-button" onclick="window.location.href='addDevice.html'">Add Device</button>
-        <button class="nav-button" onclick="window.location.href='report.html'">View Report</button>
-    </nav>
+    
     <script src="js/preloader.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/header.js"></script>
 </body>
 
 </html>

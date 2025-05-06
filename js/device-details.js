@@ -177,23 +177,27 @@ function updateDeviceUI(device) {
     
     if (device.power_status) {
         // Device is ON
-        statusElement.textContent = 'ON';
-        statusElement.className = 'status-on';
+        if (statusElement) {
+            statusElement.textContent = 'ON';
+            statusElement.className = 'status-on';
+        }
         
         // Update power toggle button
         if (toggleButton) {
             toggleButton.className = 'power-button on';
-            document.getElementById('powerStatus').textContent = 'Turn Off';
+            toggleButton.title = 'Turn Off';
         }
     } else {
         // Device is OFF
-        statusElement.textContent = 'OFF';
-        statusElement.className = 'status-off';
+        if (statusElement) {
+            statusElement.textContent = 'OFF';
+            statusElement.className = 'status-off';
+        }
         
         // Update power toggle button
         if (toggleButton) {
             toggleButton.className = 'power-button off';
-            document.getElementById('powerStatus').textContent = 'Turn On';
+            toggleButton.title = 'Turn On';
         }
     }
     
@@ -299,11 +303,17 @@ async function toggleDevicePower() {
         // Update UI
         const powerStatusText = newStatus ? 'Turn Off' : 'Turn On';
         const powerStatusElement = document.getElementById('powerStatus');
-        powerStatusElement.textContent = powerStatusText;
+        if (powerStatusElement) {
+            powerStatusElement.textContent = powerStatusText;
+        }
         
         // Update power toggle button
         const toggleButton = document.getElementById('powerToggle');
-        toggleButton.className = `power-button ${newStatus ? 'on' : 'off'}`;
+        if (toggleButton) {
+            toggleButton.className = `power-button ${newStatus ? 'on' : 'off'}`;
+            // Update the title attribute for accessibility
+            toggleButton.title = powerStatusText;
+        }
         
         // Update device status in device information section
         const deviceStatusElement = document.getElementById('deviceStatus');
@@ -784,14 +794,21 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Helper function to turn off device
             async function turnOffDevice(device, dailyUsage, monthlyUsage, period, limit) {
+                // Create update object with power status and usage data
+                const updateData = {
+                    power_status: false,
+                    daily_usage: dailyUsage,
+                    monthly_usage: monthlyUsage,
+                    updated_at: new Date().toISOString()
+                };
+                
+                // Reset the specific limit that was met
+                updateData[`${period}_limit`] = null;
+                
+                // Update the device in the database
                 await supabase
                     .from('devices')
-                    .update({
-                        power_status: false,
-                        daily_usage: dailyUsage,
-                        monthly_usage: monthlyUsage,
-                        updated_at: new Date().toISOString()
-                    })
+                    .update(updateData)
                     .eq('id', deviceId);
                 
                 // Update the UI to show device is turned off
@@ -807,10 +824,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Update power toggle button
                 if (toggleButton) {
                     toggleButton.className = 'power-button off';
-                    document.getElementById('powerStatus').textContent = 'Turn On';
+                    toggleButton.title = 'Turn On';
                 }
                 
-                showPopup(`Device turned off: ${period.charAt(0).toUpperCase() + period.slice(1)} cost limit of ${limit} SAR reached`, true);
+                // Hide the limit display for the reset limit
+                const limitDisplayElement = document.getElementById(`${period}LimitDisplay`);
+                if (limitDisplayElement) {
+                    limitDisplayElement.style.display = 'none';
+                }
+                
+                showPopup(`Device turned off: ${period.charAt(0).toUpperCase() + period.slice(1)} cost limit of ${limit} SAR reached and has been reset`, true);
             }
             
             // Update the device with new values
@@ -837,12 +860,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleButton = document.getElementById('powerToggle');
     if (toggleButton) {
         toggleButton.addEventListener('click', toggleDevicePower);
-    }
-    
-    // Save settings button
-    const saveSettingsButton = document.getElementById('saveSettings');
-    if (saveSettingsButton) {
-        saveSettingsButton.addEventListener('click', saveDeviceSettings);
     }
     
     // Delete device button

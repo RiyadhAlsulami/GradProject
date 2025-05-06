@@ -61,27 +61,28 @@ function displayDevices(devices) {
       // Display IP address or fallback
       const ipAddress = device.ip_address || "Not available";
       
+      // Simplified device card structure
       deviceElement.innerHTML = `
         <div class="device-status ${device.power_status ? 'status-on' : 'status-off'}"></div>
         <h3 class="device-name">${device.name || 'Unnamed Device'}</h3>
-        <div class="device-details">
-          <div class="device-detail">
-            <span class="detail-label">Daily Usage</span>
-            <span class="detail-value">${dailyUsage} kWh</span>
-          </div>
-          <div class="device-detail">
-            <span class="detail-label">Monthly Usage</span>
-            <span class="detail-value">${monthlyUsage} kWh</span>
-          </div>
-          <div class="device-detail">
-            <span class="detail-label">IP Address</span>
-            <span class="detail-value">${ipAddress}</span>
-          </div>
-          <div class="device-detail">
-            <span class="detail-label">Status</span>
-            <span class="detail-value ${device.power_status ? 'status-on' : 'status-off'}">${device.power_status ? 'ON' : 'OFF'}</span>
-          </div>
-        </div>
+        <table class="device-info-table">
+          <tr>
+            <td><span class="detail-label">Daily Usage</span></td>
+            <td><span class="detail-value">${dailyUsage} kWh</span></td>
+          </tr>
+          <tr>
+            <td><span class="detail-label">Monthly Usage</span></td>
+            <td><span class="detail-value">${monthlyUsage} kWh</span></td>
+          </tr>
+          <tr>
+            <td><span class="detail-label">IP Address</span></td>
+            <td><span class="detail-value">${ipAddress}</span></td>
+          </tr>
+          <tr>
+            <td><span class="detail-label">Status</span></td>
+            <td><span class="detail-value ${device.power_status ? 'status-on' : 'status-off'}">${device.power_status ? 'On' : 'Off'}</span></td>
+          </tr>
+        </table>
       `;
       
       devicesList.appendChild(deviceElement);

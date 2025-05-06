@@ -10,6 +10,8 @@
     <link href="css/popup.css" rel="stylesheet" />
     <link href="css/preloader.css" rel="stylesheet" />
     <link href="css/responsive.css" rel="stylesheet" />
+    <link href="css/sidebar.css" rel="stylesheet" />
+    <link href="css/header.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -21,7 +23,7 @@
     <title>Device Details - Plug&amp;Save</title>
 </head>
 
-<body>
+<body class="device-details-page">
     <div class="preloader">
         <div class="preloader-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="preloader-svg">
@@ -30,9 +32,31 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="left-panel">
-            <div class="logo">
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <button id="menu-toggle" class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="page-title">Device Details</div>
+        </div>
+        <div class="header-right">
+            <div class="header-logo">
+                <a href="dashboard.html" class="logo-link">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 28 28" class="logo-svg">
+                            <path d="M10.5 1L2 12h7l-1 11L18 12h-7l1-11z" fill="none" stroke="#4CAF50" stroke-width="1.5" />
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
                 <div class="icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 28 28" class="logo-svg">
                         <path d="M10.5 1L2 12h7l-1 11L18 12h-7l1-11z" fill="none" stroke="#4CAF50" stroke-width="1.5" />
@@ -40,23 +64,49 @@
                 </div>
                 <h1>Plug&amp;Save</h1>
             </div>
-
-            <h2>Device Details</h2>
-            <p>View and control your device's power consumption and settings.</p>
         </div>
-        <div class="right-panel">
+        <div class="sidebar-menu">
+            <a href="dashboard.html" class="sidebar-menu-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="addDevice.html" class="sidebar-menu-item">
+                <i class="fas fa-plus-circle"></i>
+                <span>Add Device</span>
+            </a>
+            <a href="report.html" class="sidebar-menu-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Reports</span>
+            </a>
+            <a href="profile.html" class="sidebar-menu-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+        <div class="sidebar-profile">
+            <div class="sidebar-profile-actions">
+                <button class="logout-btn">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
             <div class="dashboard-content">
                 <div class="dashboard-card">
                     <div id="deviceHeader">
                         <h2 id="deviceName">Loading device...</h2>
                     </div>
 
-                    <div id="deviceControls" class="device-controls">
-                        <button id="powerToggle" class="power-button">
-                            <span class="power-icon">⏻</span>
-                            <span id="powerStatus">Turn Off</span>
-                        </button>
-                        <button id="deleteDevice" class="danger-button">Delete Device</button>
+                    <div class="device-control-containers">
+                        <div class="power-container">
+                            <button id="powerToggle" class="power-button" title="Toggle Power">
+                                <i class="fas fa-power-off"></i>
+                            </button>
+                        </div>
+                        <div class="delete-container">
+                            <button id="deleteDevice" class="danger-button">Delete Device</button>
+                        </div>
                     </div>
 
                     <div class="usage-stats">
@@ -78,11 +128,6 @@
                         </div>
                     </div>
 
-                    <div class="chart-container">
-                        <h3>Consumption History (24 Hours)</h3>
-                        <canvas id="consumptionChart"></canvas>
-                    </div>
-
                     <div class="device-settings">
                         <h3>Device Settings</h3>
                         <div class="settings-form">
@@ -96,34 +141,38 @@
                                 <small class="form-text">Automatically calculated based on Saudi Electricity Company rates</small>
                                 <div class="calculated-rate">Current rate: <span id="calculatedRate">0.18 SAR/kWh</span></div>
                             </div>
-                            <div class="limit-settings">
-                                <h3>Device Limits</h3>
-                                <div class="form-group">
-                                    <label for="costLimit">Cost Limit (SAR)</label>
-                                    <input type="number" id="costLimit" step="0.1" min="0" placeholder="Set cost limit">
-                                    <select id="limitPeriod">
-                                        <option value="daily">Daily</option>
-                                        <option value="weekly">Weekly</option>
-                                        <option value="monthly">Monthly</option>
-                                    </select>
-                                    <button type="button" id="saveCostLimit" class="primary-button">Save Cost Limit</button>
-                                    <div id="limitDisplay">
-                                        <div id="dailyLimitDisplay" style="display: none;"><strong>Daily limit: </strong><span id="dailyLimit">Not set</span></div>
-                                        <div id="weeklyLimitDisplay" style="display: none;"><strong>Weekly limit: </strong><span id="weeklyLimit">Not set</span></div>
-                                        <div id="monthlyLimitDisplay" style="display: none;"><strong>Monthly limit: </strong><span id="monthlyLimit">Not set</span></div>
-                                    </div>
-                                    <div class="reset-limit-container">
-                                        <select id="resetLimitType">
-                                            <option value="daily">Daily Limit</option>
-                                            <option value="weekly">Weekly Limit</option>
-                                            <option value="monthly">Monthly Limit</option>
-                                            <option value="all">All Limits</option>
-                                        </select>
-                                        <button type="button" id="resetLimit" class="secondary-button">Reset Limit</button>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+
+                    <div class="device-limits-section">
+                        <h3>Device Limits</h3>
+                        <div class="limits-form">
+                            <div class="limit-input-group">
+                                <label for="costLimit">Cost Limit (SAR)</label>
+                                <input type="number" id="costLimit" step="0.1" min="0" placeholder="Set cost limit">
+                                <select id="limitPeriod">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                                <button type="button" id="saveCostLimit" class="primary-button">Save Cost Limit</button>
                             </div>
-                            <button id="saveSettings" class="primary-button">Save Settings</button>
+                            
+                            <div id="limitDisplay">
+                                <div id="dailyLimitDisplay" style="display: none;"><strong>Daily limit: </strong><span id="dailyLimit">Not set</span></div>
+                                <div id="weeklyLimitDisplay" style="display: none;"><strong>Weekly limit: </strong><span id="weeklyLimit">Not set</span></div>
+                                <div id="monthlyLimitDisplay" style="display: none;"><strong>Monthly limit: </strong><span id="monthlyLimit">Not set</span></div>
+                            </div>
+                            
+                            <div class="reset-limit-container">
+                                <select id="resetLimitType">
+                                    <option value="daily">Daily Limit</option>
+                                    <option value="weekly">Weekly Limit</option>
+                                    <option value="monthly">Monthly Limit</option>
+                                    <option value="all">All Limits</option>
+                                </select>
+                                <button type="button" id="resetLimit" class="secondary-button">Reset Limit</button>
+                            </div>
                         </div>
                     </div>
 
@@ -188,13 +237,9 @@
         </div>
     </div>
 
-    <nav class="bottom-nav">
-        <button class="nav-button" onclick="window.location.href='dashboard.html'">Dashboard</button>
-        <button class="nav-button" onclick="window.location.href='addDevice.html'">Add Device</button>
-        <button class="nav-button" onclick="window.location.href='report.html'">View Report</button>
-    </nav>
-
     <script src="js/preloader.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/header.js"></script>
 </body>
 
 </html>
