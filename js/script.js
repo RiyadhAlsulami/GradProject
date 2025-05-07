@@ -14,32 +14,6 @@ if ('serviceWorker' in navigator) {
 // Utility functions for Plug&Save
 import { supabase } from './config.js'
 
-// Navigation functions
-function navigateToLogin() {
-    console.log("Navigating to login page");
-    window.location.href = "login.html";
-}
-
-function navigateToSignup() {
-    console.log("Navigating to signup page");
-    window.location.href = "signup.html";
-}
-
-function navigateToDashboard() {
-    console.log("Navigating to dashboard page");
-    window.location.href = "dashboard.html";
-}
-
-function navigateToAddDevice() {
-    console.log("Navigating to add device page");
-    window.location.href = "addDevice.html";
-}
-
-function navigateToReports() {
-    console.log("Navigating to reports page");
-    window.location.href = "report.html";
-}
-
 // Logout function using Supabase
 async function logout() {
     try {
@@ -56,56 +30,6 @@ async function logout() {
         console.error('Unexpected error during logout:', error);
     }
 }
-
-// Utility function to get current user
-async function getCurrentUser() {
-    try {
-        const { data, error } = await supabase.auth.getSession();
-        
-        if (error) {
-            console.error('Error getting session:', error.message);
-            return null;
-        }
-        
-        return data.session?.user || null;
-    } catch (error) {
-        console.error('Unexpected error getting user:', error);
-        return null;
-    }
-}
-
-// Function to format currency
-function formatCurrency(amount) {
-    return new Intl.NumberFormat('en-US', { 
-        style: 'currency', 
-        currency: 'USD',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }).format(amount);
-}
-
-// Function to format power in kWh
-function formatPower(kWh) {
-    return `${parseFloat(kWh).toFixed(2)} kWh`;
-}
-
-// Function to format dates
-function formatDate(timestamp) {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric' 
-    });
-}
-
-// Make navigation functions available globally
-window.navigateToLogin = navigateToLogin;
-window.navigateToSignup = navigateToSignup;
-window.navigateToDashboard = navigateToDashboard;
-window.navigateToAddDevice = navigateToAddDevice;
-window.navigateToReports = navigateToReports;
-window.logout = logout;
 
 // Set up event listeners
 document.addEventListener('DOMContentLoaded', function() {

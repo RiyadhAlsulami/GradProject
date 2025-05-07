@@ -311,23 +311,20 @@ async function changePassword(event) {
     }
 }
 
-// Toggle password visibility
-function togglePasswordVisibility(event) {
-    const targetId = event.currentTarget.getAttribute('data-target');
-    const passwordInput = $(targetId);
-    const isVisible = passwordInput.type === 'text';
-    
-    passwordInput.type = isVisible ? 'password' : 'text';
-    event.currentTarget.textContent = isVisible ? '👁️' : '👁️‍🗨️';
-}
-
 // Handle account deletion
 function showDeleteModal() {
-    setDisplay('deleteModal', 'block');
+    // Simply show the delete confirmation section
+    document.getElementById('deleteModal').style.display = 'block';
+    
+    // Scroll to make it visible if needed
+    document.getElementById('deleteModal').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function hideDeleteModal() {
-    setDisplay('deleteModal', 'none');
+    // Hide the delete confirmation section
+    document.getElementById('deleteModal').style.display = 'none';
+    
+    // Clear the password field
     setValue('deleteConfirmPassword', '');
 }
 
@@ -408,6 +405,25 @@ async function deleteAccount() {
     }
 }
 
+// Handle user logout
+async function handleLogout() {
+    try {
+        const { error } = await supabase.auth.signOut();
+        
+        if (error) throw error;
+        
+        showPopup('Successfully logged out');
+        
+        // Redirect to login page after a short delay
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 1500);
+    } catch (error) {
+        console.error('Logout error:', error);
+        showPopup(error.message || 'Failed to logout', false);
+    }
+}
+
 // Set up event listeners
 document.addEventListener('DOMContentLoaded', () => {
     // Load profile data
@@ -418,25 +434,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add event listeners to form elements
     const elements = {
-        'profileForm': { event: 'submit', handler: saveProfileChanges },
-        'changePasswordForm': { event: 'submit', handler: changePassword },
         'editProfileBtn': { event: 'click', handler: enableEditMode },
         'cancelEditBtn': { event: 'click', handler: cancelEdit },
+        'profileForm': { event: 'submit', handler: saveProfileChanges },
+        'changePasswordForm': { event: 'submit', handler: changePassword },
         'deleteAccountBtn': { event: 'click', handler: showDeleteModal },
         'cancelDeleteBtn': { event: 'click', handler: hideDeleteModal },
         'confirmDeleteBtn': { event: 'click', handler: deleteAccount },
-        'logoutBtn': { 
-            event: 'click', 
-            handler: async () => {
-                try {
-                    await supabase.auth.signOut();
-                    window.location.href = 'login.html';
-                } catch (error) {
-                    console.error('Logout error:', error);
-                    showPopup('Failed to log out', false);
-                }
-            }
-        }
+        'logoutBtn': { event: 'click', handler: handleLogout }
     };
     
     // Attach all event listeners
@@ -445,8 +450,4 @@ document.addEventListener('DOMContentLoaded', () => {
         if (element) element.addEventListener(event, handler);
     });
     
-    // Add password visibility toggle listeners
-    document.querySelectorAll('.toggle-password').forEach(button => 
-        button.addEventListener('click', togglePasswordVisibility)
-    );
 });

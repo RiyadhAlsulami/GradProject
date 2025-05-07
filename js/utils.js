@@ -9,6 +9,19 @@
  * function implementations in each component.
  */
 
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then((registration) => {
+                console.log('ServiceWorker registration successful');
+            })
+            .catch((err) => {
+                console.log('ServiceWorker registration failed: ', err);
+            });
+    });
+}
+
 /**
  * Shows a popup notification to the user
  * @param {string} message - The message to display
@@ -157,6 +170,18 @@ export function getErrorMessage(error) {
 }
 
 /**
+ * Navigation helpers
+ */
+
+/**
+ * Navigate to a specific page
+ * @param {string} page - The page to navigate to
+ */
+export function navigateTo(page) {
+    window.location.href = page;
+}
+
+/**
  * Validation utilities
  */
 
@@ -214,7 +239,7 @@ export function validateString(value, options = {}) {
         return { isValid: true, message: '' };
     }
     
-    // Ensure value is a string
+    // Convert to string
     const strValue = String(value || '');
     
     // Check minimum length if specified
@@ -228,7 +253,7 @@ export function validateString(value, options = {}) {
     }
     
     // Check pattern if specified
-    if (pattern && !pattern.test(strValue)) {
+    if (pattern instanceof RegExp && !pattern.test(strValue)) {
         return { isValid: false, message: 'Invalid format' };
     }
     
@@ -247,7 +272,7 @@ export function validateEmail(email, allowEmpty = false) {
         return { isValid: true, message: '' };
     }
     
-    // Basic email pattern
+    // Basic email validation pattern
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
     if (!emailPattern.test(String(email || ''))) {
@@ -269,7 +294,7 @@ export function validateIpAddress(ip, allowEmpty = false) {
         return { isValid: true, message: '' };
     }
     
-    // IPv4 pattern
+    // IPv4 validation pattern
     const ipv4Pattern = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
     
     if (!ipv4Pattern.test(String(ip || ''))) {
@@ -279,21 +304,131 @@ export function validateIpAddress(ip, allowEmpty = false) {
     return { isValid: true, message: '' };
 }
 
+/**
+ * Password validation function for signup form
+ * @param {string} password - The password to validate
+ * @returns {object} Validation results for each policy
+ */
+export function validatePassword(password) {
+    const policies = {
+        lengthCheck: { regex: /.{8,}/, message: 'At least 8 characters' },
+        uppercaseCheck: { regex: /[A-Z]/, message: 'At least one uppercase letter' },
+        lowercaseCheck: { regex: /[a-z]/, message: 'At least one lowercase letter' },
+        numberCheck: { regex: /[0-9]/, message: 'At least one number' }
+    };
+    
+    const results = {};
+    
+    for (const [policy, { regex, message }] of Object.entries(policies)) {
+        results[policy] = {
+            isValid: regex.test(password),
+            message
+        };
+    }
+    
+    return results;
+}
+
+/**
+ * Setup password validation UI for signup form
+ * @param {HTMLInputElement} passwordInput - The password input element
+ */
+export function setupPasswordValidation(passwordInput) {
+    if (!passwordInput) return;
+    
+    // Policy items for password validation
+    const policyItems = {
+        lengthCheck: /.{8,}/,
+        uppercaseCheck: /[A-Z]/,
+        lowercaseCheck: /[a-z]/,
+        numberCheck: /[0-9]/
+    };
+
+    passwordInput.addEventListener('input', function() {
+        const password = this.value;
+        
+        Object.entries(policyItems).forEach(([id, regex]) => {
+            const element = document.getElementById(id);
+            if (element) {
+                const icon = element.querySelector('.policy-icon');
+                
+                if (regex.test(password)) {
+                    element.classList.add('valid');
+                    element.classList.remove('invalid');
+                    if (icon) {
+                        icon.textContent = '✓';
+                        icon.style.color = '#28a745';
+                    }
+                } else {
+                    element.classList.add('invalid');
+                    element.classList.remove('valid');
+                    if (icon) {
+                        icon.textContent = '❌';
+                        icon.style.color = '#dc3545';
+                    }
+                }
+            }
+        });
+    });
+}
+
+/**
+ * Setup event listeners for common UI elements
+ */
+export function setupCommonEventListeners() {
+    // Set up logout buttons
+    const logoutButtons = document.querySelectorAll('.logout-btn');
+    if (logoutButtons) {
+        logoutButtons.forEach(button => {
+            button.addEventListener('click', logout);
+        });
+    }
+    
+    // Set up navigation buttons
+    const setupNavButtons = (selector, page) => {
+        const buttons = document.querySelectorAll(selector);
+        if (buttons) {
+            buttons.forEach(button => {
+                button.addEventListener('click', () => navigateTo(page));
+            });
+        }
+    };
+    
+    setupNavButtons('.dashboard-btn', 'dashboard.html');
+    setupNavButtons('.add-device-btn', 'addDevice.html');
+    setupNavButtons('.reports-btn', 'report.html');
+    setupNavButtons('.login-nav-btn', 'login.html');
+    setupNavButtons('.signup-nav-btn', 'signup.html');
+    
+    // Setup password validation if on signup page
+    const passwordInput = document.getElementById('signupPassword');
+    if (passwordInput) {
+        setupPasswordValidation(passwordInput);
+    }
+}
+
+// Initialize common event listeners when DOM is loaded
+document.addEventListener('DOMContentLoaded', setupCommonEventListeners);
+
 // Export an object that can be used to revert to original implementations
 export const originalImplementations = {
     // This object can be used to store original function implementations
     // if needed for reverting changes
-    enabled: false,
+    _enabled: false,
     
-    // Enable original implementations
+    /**
+     * Enable original implementations
+     */
     enable() {
-        this.enabled = true;
-        console.log('Reverted to original function implementations');
+        this._enabled = true;
+        console.log('Reverted to original implementations');
     },
     
-    // Disable original implementations
+    /**
+     * Disable original implementations
+     */
     disable() {
-        this.enabled = false;
-        console.log('Using centralized utility functions');
+        this._enabled = false;
+        console.log('Using utility implementations');
     }
 };

@@ -176,7 +176,60 @@
     color: #1565c0;
 }
 
-/* Responsive styles */
+/* Device Type Info Styles */
+.device-type-info {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    border-left: 4px solid #4CAF50;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.device-icon {
+    font-size: 2rem;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.device-details {
+    flex: 1;
+}
+
+.device-wattage {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.device-description {
+    font-size: 0.85rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Media queries for responsive design */
+@media (max-width: 600px) {
+    .device-type-info {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .device-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
+
 @media (max-width: 768px) {
     .form-box {
         margin: 20px auto;

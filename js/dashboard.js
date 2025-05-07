@@ -127,6 +127,46 @@ function viewDeviceDetails(deviceId) {
 window.viewDeviceDetails = viewDeviceDetails;
 // Make loadDevices global so it can be called from power-simulation.js
 window.loadDevices = loadDevices;
+
+// Handle update usage button click
+function setupUpdateButton() {
+  const updateBtn = document.getElementById('updateUsageBtn');
+  const updateIcon = document.getElementById('updateIcon');
+  
+  if (updateBtn && updateIcon) {
+    updateBtn.addEventListener('click', async function() {
+      // Add spinning animation
+      updateIcon.classList.add('icon-spin');
+      updateBtn.disabled = true;
+      
+      try {
+        // Check if PowerSimulation is available
+        if (window.PowerSimulation && typeof window.PowerSimulation.forceUpdate === 'function') {
+          await window.PowerSimulation.forceUpdate();
+        } else {
+          // Fallback: manually trigger a refresh
+          const { data: sessionData } = await supabase.auth.getSession();
+          if (sessionData && sessionData.session) {
+            const user = sessionData.session.user;
+            await loadDevices(user.id);
+          }
+          
+          // Wait a bit to show the spinning animation
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+      } catch (error) {
+        console.error('Error updating device usage:', error);
+        showLocalPopup('Error updating device usage. Please try again.', false);
+      } finally {
+        // Remove spinning animation
+        updateIcon.classList.remove('icon-spin');
+        updateBtn.disabled = false;
+      }
+    });
+    
+    console.log('Update usage button initialized');
+  }
+}
   
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -171,6 +211,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         
         loadDevices(user.id);
+        setupUpdateButton();
       } else {
         window.location.href = 'login.html';
       }

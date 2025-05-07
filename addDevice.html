@@ -15,6 +15,7 @@
     <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="module" src="js/auth.js?v=2"></script>
+    <script type="module" src="js/utils.js?v=2"></script>
     <script type="module" src="js/addDevice.js?v=2"></script>
     <script type="module" src="js/config.js"></script>
     <title>Add Device - Plug&amp;Save</title>
@@ -100,7 +101,7 @@
                         
                         <div class="form-group">
                             <label for="deviceType">Device Type</label>
-                            <select id="deviceType" name="deviceType" required>
+                            <select id="deviceType" name="deviceType" onchange="updateDeviceTypeInfo(this)" required>
                                 <option value="" disabled selected>Select device type</option>
                                 <option value="light">Light</option>
                                 <option value="tv">TV</option>

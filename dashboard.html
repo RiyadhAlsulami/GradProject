@@ -15,7 +15,7 @@
     <link href="css/header.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script type="module" src="js/auth.js?v=2"></script>
-    <script src="js/script.js"></script>
+    <script type="module" src="js/utils.js?v=2"></script>
     <script type="module" src="js/dashboard.js?v=2"></script>
     <script src="js/power-simulation.js"></script>
     <title>Dashboard - Plug&amp;Save</title>
@@ -103,8 +103,7 @@
                 <div id="devicesSection" class="dashboard-card">
                     <div class="dashboard-header">
                         <h2>Your Devices</h2>
-                        <button id="updateUsageBtn" onclick="window.PowerSimulation.forceUpdate()" 
-                        class="debug-btn" title="Force update consumption">
+                        <button id="updateUsageBtn" class="debug-btn" title="Update all device usage data">
                             <i id="updateIcon" class="fas fa-sync-alt"></i>
                             Update Usage
                         </button>

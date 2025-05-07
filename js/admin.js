@@ -69,9 +69,27 @@ async function checkAdminStatus() {
       return;
     }
     
+    // Get user data
     const { error: userError } = await supabase.auth.getUser();
     if (userError) throw userError;
     
+    // Check if user is an admin by querying the profiles table
+    const { data: profileData, error: profileError } = await supabase
+      .from('profiles')
+      .select('is_admin')
+      .eq('id', session.user.id)
+      .single();
+    
+    if (profileError) throw profileError;
+    
+    // If user is not an admin, redirect to dashboard
+    if (!profileData || profileData.is_admin !== true) {
+      showPopup('Access denied. Admin privileges required.', false);
+      setTimeout(() => window.location.href = '/dashboard.html', 2000);
+      return;
+    }
+    
+    // User is an admin, show admin content
     setDisplay(el.loading, 'none');
     setDisplay(el.adminContent, 'block');
     showPopup('Welcome, Administrator!', true);
@@ -188,30 +206,6 @@ async function createUser(event) {
   }
 }
 
-// Function to add or update email in profiles table
-async function addEmailToProfile(userId, email) {
-  try {
-    const { error } = await supabase
-      .from('profiles')
-      .upsert([{
-        id: userId,
-        email: email,
-        updated_at: new Date().toISOString()
-      }], { onConflict: 'id' });
-      
-    if (error) {
-      console.error('Error adding email to profile:', error);
-      return false;
-    }
-    
-    console.log(`Email added to profile for user ${userId}`);
-    return true;
-  } catch (error) {
-    console.error('Error in addEmailToProfile:', error);
-    return false;
-  }
-}
-
 // Function to open delete modal
 function openDeleteModal(userId) {
   el.deleteId.value = userId;
@@ -240,7 +234,7 @@ async function deleteUser() {
       const token = session.access_token;
       if (!token) throw new Error('No access token available. Please log in again.');
       
-      const response = await fetch("https://fzrxktbxjbcmbudiouqa.functions.supabase.co/delete-user", {
+      const response = await fetch("https://fzrxktbxjbcmbudiouqa.functions.supabase.co/admin-delete-user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

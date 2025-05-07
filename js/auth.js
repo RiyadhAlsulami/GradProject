@@ -97,10 +97,33 @@ async function signIn(email, password) {
         console.log("Login successful:", user.email);
         showPopup('Login successful!');
         
-        // Redirect to dashboard after a short delay
-        setTimeout(() => {
-            window.location.href = 'dashboard.html';
-        }, 1500);
+        // Check if user is admin
+        try {
+            const { data: profileData, error: profileError } = await supabase
+                .from('profiles')
+                .select('is_admin')
+                .eq('id', user.id)
+                .single();
+                
+            if (profileError) throw profileError;
+            
+            // Redirect based on admin status
+            setTimeout(() => {
+                if (profileData && profileData.is_admin === true) {
+                    // User is admin, redirect to admin page
+                    window.location.href = 'admin.html';
+                } else {
+                    // User is not admin, redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                }
+            }, 1500);
+        } catch (profileError) {
+            console.error('Error checking admin status:', profileError);
+            // Default to dashboard if there's an error checking admin status
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1500);
+        }
     } catch (error) {
         console.error("Login error:", error);
         const errorMessage = getErrorMessage(error);
