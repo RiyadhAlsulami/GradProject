@@ -256,7 +256,7 @@ async function loadReportData() {
         document.getElementById('totalDevices').textContent = totalDevices;
         document.getElementById('activeDevices').textContent = activeDevices;
         document.getElementById('totalMonthlyUsage').textContent = `${totalMonthlyUsage.toFixed(2)} kWh`;
-        document.getElementById('totalMonthlyCost').textContent = `$${totalMonthlyCost.toFixed(2)}`;
+        document.getElementById('totalMonthlyCost').textContent = `${totalMonthlyCost.toFixed(2)} SAR`;
         
         // Update device breakdown table
         const tableBody = document.getElementById('deviceBreakdownBody');
@@ -290,8 +290,8 @@ function createTableRow(device, monthlyUsage, monthlyCost, potentialSavings) {
         <td>${device.name || 'Unnamed Device'}</td>
         <td><span class="status-indicator ${device.power_status ? 'active' : 'inactive'}">${device.power_status ? 'Active' : 'Inactive'}</span></td>
         <td>${monthlyUsage.toFixed(2)} kWh</td>
-        <td>$${monthlyCost.toFixed(2)}</td>
-        <td>$${potentialSavings.toFixed(2)}</td>
+        <td>${monthlyCost.toFixed(2)} SAR</td>
+        <td>${potentialSavings.toFixed(2)} SAR</td>
     `;
     return row;
 }
@@ -308,8 +308,8 @@ function updateSavingsAnalysis(devices, avgElectricityRate) {
         const currentMonthSavingsElement = document.getElementById('currentMonthSavings');
         const projectedAnnualSavingsElement = document.getElementById('projectedAnnualSavings');
         
-        if (currentMonthSavingsElement) currentMonthSavingsElement.textContent = `$${monthlySavingsCost.toFixed(2)}`;
-        if (projectedAnnualSavingsElement) projectedAnnualSavingsElement.textContent = `$${annualSavingsCost.toFixed(2)}`;
+        if (currentMonthSavingsElement) currentMonthSavingsElement.textContent = `${monthlySavingsCost.toFixed(2)} SAR`;
+        if (projectedAnnualSavingsElement) projectedAnnualSavingsElement.textContent = `${annualSavingsCost.toFixed(2)} SAR`;
     } catch (error) {
         console.error('Error updating savings analysis:', error);
     }
@@ -514,8 +514,8 @@ function loadDemoData() {
         const currentMonthSavingsElement = document.getElementById('currentMonthSavings');
         const projectedAnnualSavingsElement = document.getElementById('projectedAnnualSavings');
         
-        if (currentMonthSavingsElement) currentMonthSavingsElement.textContent = `$${monthlySavingsCost.toFixed(2)}`;
-        if (projectedAnnualSavingsElement) projectedAnnualSavingsElement.textContent = `$${annualSavingsCost.toFixed(2)}`;
+        if (currentMonthSavingsElement) currentMonthSavingsElement.textContent = `${monthlySavingsCost.toFixed(2)} SAR`;
+        if (projectedAnnualSavingsElement) projectedAnnualSavingsElement.textContent = `${annualSavingsCost.toFixed(2)} SAR`;
         
         // Restore the real summary data
         document.getElementById('totalDevices').textContent = realTotalDevices;
