@@ -8,7 +8,7 @@ const SUPABASE_CONFIG = {
     supabaseKey: env.get('SUPABASE_KEY')
 };
 
-// Create the Supabase client with persistent sessions
+// Create the Supabase client with persistent sessions and proper headers
 const supabase = createClient(
     SUPABASE_CONFIG.supabaseUrl, 
     SUPABASE_CONFIG.supabaseKey,
@@ -18,6 +18,12 @@ const supabase = createClient(
             autoRefreshToken: true,
             detectSessionInUrl: true,
             storage: window.localStorage
+        },
+        global: {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
         }
     }
 );

@@ -50,12 +50,31 @@ async function loadUserProfile() {
             .from('profiles')
             .select('*')
             .eq('id', userId)
-            .single();
+            .maybeSingle(); // Use maybeSingle instead of single to avoid 406 errors
         
         if (profileError) {
             console.error('Error fetching profile:', profileError);
+            showPopup('Error loading profile data. Creating a new profile.', false);
             
-            
+            // Create a new profile if one doesn't exist
+            const now = new Date().toISOString();
+            const { data: newProfile, error: createError } = await supabase
+                .from('profiles')
+                .insert([{
+                    id: userId,
+                    full_name: session.user.email.split('@')[0] || 'User',
+                    phone: '',
+                    created_at: now,
+                    updated_at: now
+                }])
+                .select()
+                .maybeSingle();
+                
+            if (!createError && newProfile) {
+                profile = newProfile;
+            } else {
+                console.error('Error creating profile:', createError);
+            }
         }
         
         // Update form and show content
@@ -159,7 +178,7 @@ async function saveProfileChanges(event) {
             })
             .eq('id', session.user.id)
             .select()
-            .single();
+            .maybeSingle();
         
         if (error) throw error;
         

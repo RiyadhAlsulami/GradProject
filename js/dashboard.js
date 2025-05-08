@@ -181,20 +181,43 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('userContent').style.display = 'block';
         
         // Fetch user profile from the profiles table
-        const { data: profileData, error: profileError } = await supabase
+        let { data: profileData, error: profileError } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', user.id)
-          .single();
+          .maybeSingle();
 
         console.log("Profile data:", profileData); // Debug log
         console.log("Profile error:", profileError); // Debug log
 
-        if (profileError) {
+        if (profileError || !profileData) {
           console.error("Error fetching user profile:", profileError);
-          document.getElementById("welcomeUser").innerText = `Welcome, ${user.email}!`;
-          showLocalPopup('Could not load user profile data.', false);
-        } else if (profileData) {
+          
+          // Create a new profile if one doesn't exist
+          const now = new Date().toISOString();
+          const { data: newProfile, error: createError } = await supabase
+            .from('profiles')
+            .insert([{
+              id: user.id,
+              full_name: user.email.split('@')[0] || 'User',
+              phone: '',
+              created_at: now,
+              updated_at: now
+            }])
+            .select()
+            .maybeSingle();
+            
+          if (!createError && newProfile) {
+            profileData = newProfile;
+            console.log("Created new profile:", newProfile);
+          } else {
+            console.error("Error creating profile:", createError);
+            document.getElementById("welcomeUser").innerText = `Welcome, ${user.email}!`;
+            showLocalPopup('Could not load user profile data.', false);
+          }
+        }
+        
+        if (profileData) {
           // Try to get the user's name from different possible fields
           const userName = profileData.full_name || profileData.name || profileData.username || profileData.display_name;
           
